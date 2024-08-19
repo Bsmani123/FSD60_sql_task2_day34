@@ -1,0 +1,175 @@
+Design Database for zen_class:-
+
+-- -> CREATE A DATABASE:-
+         
+         CREATE DATABASE `zen_class`;
+
+
+
+-- -> CREATE TABLE INSIDE D/B :-
+         
+         CREATE TABLE `zen_class`.`users`(create table users(
+
+         user_id integer auto_increment primary key,
+
+         user_name varchar (255) NOT NULL,
+
+         email varchar (255) NOT NULL,
+
+         createdAt datetime ,
+                                           --   // createdAt datetime DEFAULT CURRENT_TIMESTAMP,
+
+
+         batch integer
+
+););
+
+
+-- -> CREATE FOREIGN KEY :-
+
+     ALTER TABLE `users`  add foreign key (`batch`) references batch_data (`batch_id`);
+
+
+-- -> CREATE TABLE CODEKATA:-
+     
+    CREATE TABLE  `codeketa`(
+
+                           `code_id` integer auto_increment primary key,
+
+                          `user_id` integer,
+
+                          `number_of_problem` integer,
+
+                           `status_problem` varchar(255),
+
+                          FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
+
+                         );
+
+            
+
+                --   select * from codeketa;
+
+
+
+
+-- -> CREATE TABLE COMPANY_DRIVES:-
+
+            CREATE TABLE `company_drives` (
+
+            `drive_id` INT(255) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+
+            `user_id` INT (255),
+
+            `drive_date` DATE,
+
+            `company` VARCHAR(100),
+
+            FOREIGN KEY (`user_id`) REFERENCES users(`user_id`)
+
+            );
+
+
+
+
+-- -> CREATE TABLE "batch_data":-
+
+                CREATE TABLE batch_data(
+
+                batch_id int auto_increment primary key,
+
+                batch_name varchar(100)
+
+                );
+
+          
+
+-- -> add FOREIGN key:-
+
+             ALTER TABLE `zen_class`.` batch_data` ADD foreign key (`batch_id`)references `users`(`batch`);
+
+
+
+---> "INNER JOIN TABLE" - COMMON value :-
+------------------------------------------
+
+                     SELECT users.batch,batch_data.batch_id
+
+                     FROM users
+
+                     INNER JOIN batch_data ON users.batch = batch_data.batch_id;
+
+-->  CREATING TABLE "mentor":-
+------------------------------
+
+                     CREATE TABLE mentors (
+
+                     mentorid INTEGER AUTO_INCREMENT PRIMARY KEY,
+
+                     mentorname VARCHAR(100),
+
+                     mentoremail VARCHAR(100)
+
+                     );
+                                
+
+
+--—> CREATE TABLE TOPICS :-
+-----------------------------
+
+                     CREATE TABLE topics (
+
+                     topicid INTEGER AUTO_INCREMENT PRIMARY KEY,
+
+                     topic VARCHAR(200),
+
+                     topic_date DATE,
+
+                     mentor_id integer,
+
+                     FOREIGN KEY (mentor_id) REFERENCES mentors(mentorid)
+
+                     );
+
+select * from topics;
+
+
+--—> CREATE TABLE "tasks":
+--------------------------
+
+                     CREATE TABLE tasks (
+
+                     taskid INTEGER AUTO_INCREMENT PRIMARY KEY,
+
+                     topic_id integer,
+
+                     task VARCHAR(1000),
+
+                     batch_id INTEGER,
+
+                     FOREIGN KEY (topic_id) REFERENCES topics(topicid)
+
+                     );
+
+
+select * from tasks;
+
+--—> CREATE TABLE "attendance":-
+    ---------------------------
+
+                     CREATE TABLE attendance (
+
+                     attendanceid INTEGER AUTO_INCREMENT PRIMARY KEY,
+
+                     user_id integer,
+
+                     topicsid INTEGER,
+
+                     attended BOOLEAN,
+
+                     FOREIGN KEY ( user_id) REFERENCES users( user_id),
+
+                     FOREIGN KEY (topicsid) REFERENCES topics(topicid)
+
+                     );
+
